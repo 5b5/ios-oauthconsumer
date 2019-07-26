@@ -29,31 +29,15 @@
 @implementation NSString (OAURLEncodingAdditions)
 
 - (NSString *)oa_encodedURLString {
-	NSString *result = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                                           (CFStringRef)self,
-                                                                           NULL,                   // characters to leave unescaped (NULL = all escaped sequences are replaced)
-                                                                           CFSTR("?=&+"),          // legal URL characters to be escaped (NULL = all legal characters are replaced)
-                                                                           kCFStringEncodingUTF8); // encoding
-	return [result autorelease];
+    return [self stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
 }
 
 - (NSString *)oa_encodedURLParameterString {
-    NSString *result = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                                           (CFStringRef)self,
-                                                                           NULL,
-                                                                           CFSTR(":/=,!$&'()*+;[]@#?"),
-                                                                           kCFStringEncodingUTF8);
-	return [result autorelease];
+    return [self stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 }
 
 - (NSString *)oa_decodedURLString {
-	NSString *result = (NSString*)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
-																						  (CFStringRef)self,
-																						  CFSTR(""),
-																						  kCFStringEncodingUTF8);
-	
-	return [result autorelease];
-	
+    return [self stringByRemovingPercentEncoding];
 }
 
 -(NSString *)oa_removeQuotes

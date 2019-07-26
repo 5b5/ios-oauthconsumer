@@ -55,8 +55,8 @@ static NSString *Boundary = @"-----------------------------------0xCoCoaouTHeBou
         NSArray *encodedPairElements = [encodedPair componentsSeparatedByString:@"="];
         if (encodedPairElements.count != 2)
             return nil;
-        OARequestParameter *parameter = [[OARequestParameter alloc] initWithName:[[encodedPairElements objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-                                                                           value:[[encodedPairElements objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        OARequestParameter *parameter = [[OARequestParameter alloc] initWithName:[[encodedPairElements objectAtIndex:0] stringByRemovingPercentEncoding]
+                                                                           value:[[encodedPairElements objectAtIndex:1] stringByRemovingPercentEncoding]];
         [requestParameters addObject:parameter];
 		[parameter release];
     }
